@@ -66,7 +66,13 @@ client.on('message', async (message) => {
             let text = '📢 *Tagging All Members:*\n\n';
             let mentions = [];
             for (let participant of chat.participants) {
-                const contact = await client.getContactById(participant.id._serialized);
+                client.on('message', async msg => {
+  if (msg.body === '!warn') {
+    const contact = await client.getContactById(msg.from);
+    console.log(`Warning sent to: ${contact.pushname}`);
+    msg.reply("⚠️ This is your warning!");
+  }
+});
                 mentions.push(contact);
                 text += `@${participant.id.user} `;
             }
